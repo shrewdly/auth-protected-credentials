@@ -1,58 +1,33 @@
-"use client";
-
-import { useCallback, useState } from "react";
-
 import MainSelector from "../components/users/mainSelector";
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
-const fetchApi = (endpoint) => {
-	return fetch(`/api/${endpoint}`).then((response) => {
-		if (!response.ok) {
-			throw new Error("Network response was not ok");
-		}
-		return response.json();
+async function fetchUsers() {
+	const { signal } = new AbortController();
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/`, {
+		cache: "no-store",
 	});
-};
-// async function handleResponse(response) {
-// 	const contentType = response.headers.get("Content-Type") || "";
-// 	const isJson = contentType.includes("application/json");
-// 	const data = isJson ? await response.json() : await response.text();
+	// console.log("Step2", response.data);
 
-// 	if (!response.ok) {
-// 		const message = isJson
-// 			? data.message || response.statusText
-// 			: response.statusText;
-// 		throw new Error(message);
-// 	}
+	return handleResponse(response).then((data) => data.users);
+}
+async function handleResponse(response) {
+	const contentType = response.headers.get("Content-Type") || "";
+	const isJson = contentType.includes("application/json");
+	const data = isJson ? await response.json() : await response.text();
 
-// 	return data;
-// }
+	if (!response.ok) {
+		const message = isJson
+			? data.message || response.statusText
+			: response.statusText;
+		throw new Error(message);
+	}
+
+	return data;
+}
 
 const Users = async () => {
-	const [isLoadingPost, setLoadingPost] = useState(false);
-	const [apiResponse, setApiResponse] = useState(null);
-	const [apiError, setApiError] = useState(null);
-
-	const getApiCallback = useCallback(
-		(endpoint) => async (e) => {
-			setLoadingPost(true);
-			setApiError(null);
-			try {
-				const response = await fetchApi(endpoint);
-				setApiResponse(response);
-			} catch (e) {
-				setApiError(e);
-				console.error(e);
-			}
-			setLoadingPost(false);
-		},
-		[]
-	);
-
-	const onGetUsers = useCallback(getApiCallback("users"), []);
-	const users = onGetUsers();
-
+	const users = await fetchUsers();
 	console.log("Starting Users", users);
 	return (
 		<div>
