@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import MainSelector from "../components/users/mainSelector";
 
@@ -51,7 +51,7 @@ const Users = async () => {
 	);
 
 	const onGetUsers = useCallback(getApiCallback("users"), []);
-	const user = onGetUsers();
+	const users = onGetUsers();
 
 	console.log("Starting Users", users);
 	return (
