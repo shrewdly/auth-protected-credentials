@@ -1,33 +1,29 @@
-import axios from axios
-
 import MainSelector from "../components/users/mainSelector";
-
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
-async function fetchUsers() {
-	const { signal } = new AbortController();
-	const response =axios.get("/api/users/", {
-		cache: "no-store",
+const fetchUsers = () => {
+	return fetch(`/api/users`).then((response) => {
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+		return response.json();
 	});
-	// console.log("Step2", response.data);
+};
+// async function handleResponse(response) {
+// 	const contentType = response.headers.get("Content-Type") || "";
+// 	const isJson = contentType.includes("application/json");
+// 	const data = isJson ? await response.json() : await response.text();
 
-	return handleResponse(response).then((data) => data.users);
-}
-async function handleResponse(response) {
-	const contentType = response.headers.get("Content-Type") || "";
-	const isJson = contentType.includes("application/json");
-	const data = isJson ? await response.json() : await response.text();
+// 	if (!response.ok) {
+// 		const message = isJson
+// 			? data.message || response.statusText
+// 			: response.statusText;
+// 		throw new Error(message);
+// 	}
 
-	if (!response.ok) {
-		const message = isJson
-			? data.message || response.statusText
-			: response.statusText;
-		throw new Error(message);
-	}
-
-	return data;
-}
+// 	return data;
+// }
 
 const Users = async () => {
 	const users = await fetchUsers();
