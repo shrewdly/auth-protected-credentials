@@ -1,9 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
 import MainSelector from "../components/users/mainSelector";
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
-const fetchUsers = () => {
-	return fetch(`/api/users`).then((response) => {
+const fetchApi = (endpoint) => {
+	return fetch(`/api/${endpoint}`).then((response) => {
 		if (!response.ok) {
 			throw new Error("Network response was not ok");
 		}
@@ -26,7 +30,29 @@ const fetchUsers = () => {
 // }
 
 const Users = async () => {
-	const users = await fetchUsers();
+	const [isLoadingPost, setLoadingPost] = useState(false);
+	const [apiResponse, setApiResponse] = useState(null);
+	const [apiError, setApiError] = useState(null);
+
+	const getApiCallback = useCallback(
+		(endpoint) => async (e) => {
+			setLoadingPost(true);
+			setApiError(null);
+			try {
+				const response = await fetchApi(endpoint);
+				setApiResponse(response);
+			} catch (e) {
+				setApiError(e);
+				console.error(e);
+			}
+			setLoadingPost(false);
+		},
+		[]
+	);
+
+	const onGetUsers = useCallback(getApiCallback("users"), []);
+	const user = onGetUsers();
+
 	console.log("Starting Users", users);
 	return (
 		<div>
