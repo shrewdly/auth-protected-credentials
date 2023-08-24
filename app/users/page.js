@@ -1,10 +1,13 @@
+import axios from axios
+
 import MainSelector from "../components/users/mainSelector";
+
 
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
 async function fetchUsers() {
 	const { signal } = new AbortController();
-	const response = await fetch(`${SERVER_ENDPOINT}/api/users/`, {
+	const response = await axios.get(`/api/users/`, {
 		cache: "no-store",
 	});
 	// console.log("Step2", response.data);
