@@ -1,12 +1,10 @@
-"use client";
-
 import MainSelector from "../components/users/mainSelector";
 
-// const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
+const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
 async function fetchUsers() {
 	const { signal } = new AbortController();
-	const response = await fetch("api/users/", {
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/`, {
 		cache: "no-store",
 	});
 	// console.log("Step2", response.data);

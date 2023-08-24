@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 
-// const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
+const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT || "http://localhost:3000";
 
 async function handleResponse(response) {
 	const contentType = response.headers.get("Content-Type") || "";
@@ -18,7 +18,7 @@ async function handleResponse(response) {
 }
 
 export async function apiCreateUser(userData) {
-	const response = await fetch("/api/users", {
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -30,14 +30,14 @@ export async function apiCreateUser(userData) {
 }
 
 export async function apiFetchSingleUser(userId) {
-	const response = await fetch(`/api/users/${userId}`);
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/${userId}`);
 
 	return handleResponse(response).then((data) => data.data.user);
 }
 
 export async function apiFetchUsers() {
 	console.log("Step1");
-	const response = await fetch("/api/users", {
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users`, {
 		next: {
 			revalidate: 10,
 		},
@@ -48,7 +48,7 @@ export async function apiFetchUsers() {
 }
 
 export async function apiDeleteUser(userId) {
-	const response = await fetch(`/api/users${userId}`, {
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/${userId}`, {
 		method: "DELETE",
 	});
 
