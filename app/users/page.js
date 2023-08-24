@@ -6,7 +6,7 @@ import MainSelector from "../components/users/mainSelector";
 
 async function fetchUsers() {
 	const { signal } = new AbortController();
-	const response = await fetch("/api/users/", {
+	const response = await fetch("api/users/", {
 		cache: "no-store",
 	});
 	// console.log("Step2", response.data);
