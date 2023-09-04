@@ -32,10 +32,12 @@ const SignIn = () => {
 			if (!res?.error) {
 				router.push("/");
 			} else {
+				console.log("error", error);
 				setError("invalid email or password");
 			}
 		} catch (error) {
 			setLoading(false);
+			console.log("error", error);
 			setError(error);
 		}
 	};

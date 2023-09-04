@@ -5,7 +5,7 @@ import { apiCreateUser } from "./apiRequest";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
-const Register = ({ setMain }) => {
+const Reg = ({ setMain }) => {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	// const [password, setPassword] = useState("");
@@ -172,4 +172,4 @@ const Register = ({ setMain }) => {
 		</div>
 	);
 };
-export default Register;
+export default Reg;
