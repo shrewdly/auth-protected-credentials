@@ -1,14 +1,15 @@
+"use client";
 import MainSelector from "../components/users/mainSelector";
 
-async function fetchUsers() {
+const fetchUsers = () => {
 	const { signal } = new AbortController();
-	const response = await fetch(`/app/api/users/`, {
+	const response = fetch("/api/auth/users/", {
 		cache: "no-store",
 	});
 	// console.log("Step2", response.data);
 
 	return handleResponse(response).then((data) => data.users);
-}
+};
 async function handleResponse(response) {
 	const contentType = response.headers.get("Content-Type") || "";
 	const isJson = contentType.includes("application/json");
@@ -24,8 +25,8 @@ async function handleResponse(response) {
 	return data;
 }
 
-const Users = async () => {
-	const users = await fetchUsers();
+const Users = () => {
+	const users = fetchUsers();
 	console.log("Starting Users", users);
 	return (
 		<div>
