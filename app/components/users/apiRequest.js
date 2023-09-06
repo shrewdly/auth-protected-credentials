@@ -18,7 +18,7 @@ async function handleResponse(response) {
 }
 
 export async function apiCreateUser(userData) {
-	const response = await fetch(`/api/users/`, {
+	const response = await fetch(`${SERVER_ENDPOINT}/api/users/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
